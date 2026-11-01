@@ -192,31 +192,30 @@ export default function ImageUpload() {
           </div>
         </div>
 
-        <div
-          className={`iu-drop ${over ? "over" : ""} ${imageError ? "invalid" : ""} ${
-            shake.image ? "shake" : ""
-          }`}
-          tabIndex={0}
-          role="button"
-          aria-label="Choose an image"
-          aria-invalid={!!imageError}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              fileRef.current?.click();
-            }
-          }}
-          onDragOver={(e) => {
-            e.preventDefault();
-            setOver(true);
-          }}
-          onDragLeave={() => setOver(false)}
-          onDrop={(e) => {
-            e.preventDefault();
-            setOver(false);
-            pickFile(e.dataTransfer.files);
-          }}
-        >
+<div
+  className={`iu-drop ${over ? "over" : ""} ${imageError ? "invalid" : ""} ${
+    shake.image ? "shake" : ""
+  }`}
+  tabIndex={0}
+  role="button"
+  aria-label="Choose an image"
+  onKeyDown={(e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      fileRef.current?.click();
+    }
+  }}
+  onDragOver={(e) => {
+    e.preventDefault();
+    setOver(true);
+  }}
+  onDragLeave={() => setOver(false)}
+  onDrop={(e) => {
+    e.preventDefault();
+    setOver(false);
+    pickFile(e.dataTransfer.files);
+  }}
+>
           <svg viewBox="0 0 24 24" fill="none" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" stroke="url(#iu-g)" aria-hidden="true">
             <defs>
               <linearGradient id="iu-g" x1="0" y1="0" x2="1" y2="1">

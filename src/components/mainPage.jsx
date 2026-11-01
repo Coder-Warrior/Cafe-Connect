@@ -495,18 +495,6 @@ export default function MainPage({ uploadHref = "/internet-connection" }) {
     );
   }
 
-  function connect(id) {
-    if (connectingId) return;
-    setConnectingId(id);
-    timers.current.push(
-      setTimeout(() => {
-        setConnectedId(id);
-        setConnectingId(null);
-        showToast("Connected to internet successfully");
-      }, 1800)
-    );
-  }
-
   const visible = (cafes || []).filter((c) =>
     c.name.toLowerCase().includes(query.trim().toLowerCase())
   );
