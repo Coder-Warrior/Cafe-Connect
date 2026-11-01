@@ -226,18 +226,6 @@ const css = `
 .cc-footer { display: grid; justify-items: center; gap: 14px; padding: 24px 0 44px; text-align: center; color: var(--muted); font-size: .85rem; }
 .cc-badge { padding: 14px 18px; border-radius: 22px; background: #fcfefe; border: 1px solid var(--stroke); box-shadow: 0 16px 40px rgba(99,80,180,.15); }
 
-/* toast */
-.cc-toast {
-  position: fixed; left: 50%; bottom: 36px; z-index: 10; transform: translate(-50%, 140%); opacity: 0;
-  display: flex; align-items: center; gap: 12px; padding: 14px 22px; border-radius: 16px;
-  font-weight: 600; font-size: .95rem; max-width: calc(100% - 32px);
-  background: rgba(236,253,245,.97); border: 1px solid var(--ok); color: #047857; box-shadow: 0 16px 50px rgba(5,150,105,.25);
-  transition: transform .45s cubic-bezier(.2,1.2,.4,1), opacity .3s; pointer-events: none;
-}
-.cc-toast.show { transform: translate(-50%, 0); opacity: 1; }
-.cc-dot { width: 10px; height: 10px; border-radius: 50%; background: currentColor; flex: none; animation: cc-pulse 1.2s infinite; }
-@keyframes cc-pulse { 0% { box-shadow: 0 0 0 0 currentColor; } 100% { box-shadow: 0 0 0 12px transparent; } }
-
 @media (max-width: 800px) {
   .cc-hero { grid-template-columns: 1fr; padding-top: 12px; }
   .cc-radar { order: -1; width: min(240px, 70vw); }
@@ -457,28 +445,17 @@ export default function MainPage({ uploadHref = "/internet-connection" }) {
   const [scanning, setScanning] = useState(false);
   const [cafes, setCafes] = useState(null);
   const [query, setQuery] = useState("");
-  const [connectingId, setConnectingId] = useState(null);
   const [connectedId, setConnectedId] = useState(null);
-  const [toast, setToast] = useState({ show: false, text: "" });
 
   const timers = useRef([]);
-  const toastTimer = useRef(null);
   const resultsRef = useRef(null);
 
   useEffect(
     () => () => {
       timers.current.forEach(clearTimeout);
-      clearTimeout(toastTimer.current);
     },
     []
   );
-
-  // toast visible for exactly 3 seconds
-  function showToast(text) {
-    clearTimeout(toastTimer.current);
-    setToast({ show: true, text });
-    toastTimer.current = setTimeout(() => setToast((t) => ({ ...t, show: false })), 3000);
-  }
 
   function scan() {
     if (scanning) return;
@@ -584,7 +561,6 @@ export default function MainPage({ uploadHref = "/internet-connection" }) {
               <div className="cc-list">
                 {visible.map((c, i) => {
                   const connected = connectedId === c.id;
-                  const connecting = connectingId === c.id;
                   return (
                     <article
                       key={c.id}
@@ -611,7 +587,7 @@ export default function MainPage({ uploadHref = "/internet-connection" }) {
                           className="cc-small"
                           to="/internet-connection"
                         >
-                          {connecting ? "Connecting..." : "Connect"}
+                          Connect
                         </Link>
                       )}
                     </article>
@@ -657,10 +633,6 @@ export default function MainPage({ uploadHref = "/internet-connection" }) {
         </footer>
       </div>
 
-      <div className={`cc-toast ${toast.show ? "show" : ""}`} role="status" aria-live="polite">
-        <span className="cc-dot" />
-        <span>{toast.text}</span>
-      </div>
     </div>
   );
 }
